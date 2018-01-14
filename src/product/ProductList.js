@@ -12,6 +12,7 @@ class ProductListComponent extends Component {
     }
 
     async componentWillMount() {
+        getAllAction(this.props.token);
         this.props.dataset.reset(0);
     }
     renderItem() {
@@ -24,16 +25,15 @@ class ProductListComponent extends Component {
     }
     render() {
         const { isLoading,dataset,token } = this.props;
-        getAllAction(token);
         return (
             <View style={styles.content}>
-                {isLoading && <ActivityIndicator animating={isLoading} style={styles.activityIndicator} size="large"/>}
-                {<ListView
+                <ActivityIndicator animating={isLoading} style={styles.activityIndicator} size="large"/>
+                <ListView
                     dataSource={dataset}
                     enableEmptySections={true}
                     renderRow={product => (<ProductView record={product} key={product.content.id} {...this.props}
                                                         onPress={(product) => this.onProductPress(product)}/>)}/>
-                }
+
             </View>
         );
     }
@@ -45,7 +45,6 @@ class ProductListComponent extends Component {
 }
 
 const mapStateToProps = state => {
-    Alert.alert('ERROR', 'getStarted+ token'+state.auth.token);
     return {
         error: state.productList.error,
         isLoading: state.productList.isLoading,

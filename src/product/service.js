@@ -5,7 +5,6 @@ import { Alert } from 'react-native';
 
 
 export const getAllService = (token) => {
-
     return fetch(`${serverUrl}/api/product`, {
         method: 'GET',
         headers: {

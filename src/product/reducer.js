@@ -1,4 +1,4 @@
-export const productReducer = (state = { error: null, datasetState: null, isLoading: true, token: null }, action) => {
+export const productReducer = (state = { error: null, datasetState: null, isLoading: false, token: null }, action) => {
     switch (action.type) {
         case 'GET_SUCCESS':
             return { ...state, isLoading: false, dataset: thelist.concat(action.obj) }
