@@ -1,7 +1,5 @@
 import { serverUrl } from '../core/api';
-import { getLogger } from "../core/utils";
 import { Alert } from 'react-native';
-import {setItem} from "../core/storage";
 
 export const loginService = (user) => {
 
@@ -28,7 +26,6 @@ export function loginAction(data) {
                 dispatch(loginFailed('User or password is incorrect'));
             } else {
                 return response.json().then(data => {
-                    setItem("token",data.token);
                     dispatch(loginSuccess(data));
                 });
             }

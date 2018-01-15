@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { updateProductAction,updateAmountState,updatePriceState,updateNameState } from './service';
 import styles from '../core/styles';
 import { Card, Button, FormLabel, FormInput } from "react-native-elements";
-import { Text, View, ActivityIndicator, TouchableHighlight, Alert } from 'react-native';
+import { View } from 'react-native';
 
 
 

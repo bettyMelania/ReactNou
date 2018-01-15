@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Text, View, ActivityIndicator, TouchableHighlight } from 'react-native';
+import { Text, View, ActivityIndicator } from 'react-native';
 import { getLogger } from '../core/utils';
 import styles from '../core/styles';
 import { Card, Button, FormLabel, FormInput } from "react-native-elements";
@@ -54,15 +54,13 @@ class LoginComponent extends Component {
 
 
     login() {
-        log("login");
         const { dispatch, username, password } = this.props
         const inputFormProp =
             {username: username, password: password}
         dispatch(loginAction(inputFormProp)).then(() => {
             if (this.props.error === null && this.props.isLoading === false) {
-                    log("navigate");
+                    setItem("token",this.props.token);
                     this.props.navigation.navigate('ProductList');
-
             }
         });
     }

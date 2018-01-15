@@ -6,7 +6,7 @@ export function issueToText(issue) {
 
     if (issue) {
         getLogger(issue.error);
-        return issue.error;//.map(i => Object.keys(i).map(p => [p, i[p]].join(': '))).join('\n');
+        return issue.error;
     }
     return null;
 }

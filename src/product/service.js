@@ -1,7 +1,5 @@
 import { serverUrl,authHeaders } from '../core/api';
-import { getLogger } from "../core/utils";
 import { Alert } from 'react-native';
-
 
 
 export const getAllService = (token) => {
@@ -38,6 +36,7 @@ export function getAllAction(token) {
             } else {
 
                 return response.json().then(data => {
+                    //setItem("dataset",data);
                     dispatch(getAllSuccess(data));
                 });
             }
@@ -82,21 +81,6 @@ export function updateProductAction(data, token) {
     ]);
 }
 
-
-export const datasetstateSet = obj => {
-    return {
-        type: 'DATASETSTATE_SET',
-        obj
-    }
-}
-
-export const setDataset = obj => {
-    return {
-        type: 'DATASET_SET',
-        obj
-    }
-}
-
 export const getStarted = () => {
     return {
         type: 'GET_START'
@@ -124,13 +108,6 @@ export const getFailed = obj => {
         obj
     }
 }
-
-export const deleteSuccess = () => {
-    return {
-        type: 'DELETE_SUCCESS'
-    }
-}
-
 
 export const updateFailed = obj => {
     return {

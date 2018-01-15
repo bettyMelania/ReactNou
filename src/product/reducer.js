@@ -1,4 +1,3 @@
-import {Alert} from "react-native";
 
 export const productReducer = (state = { error: null,  isLoading: false, token: null, dataset: null }, action) => {
     switch (action.type) {
@@ -6,8 +5,6 @@ export const productReducer = (state = { error: null,  isLoading: false, token: 
             return { ...state, isLoading: false, dataset: action.obj }
         case 'GET_FAIL':
             return { ...state, isLoading: false, error: action.obj }
-        case 'DELETE_SUCCESS':
-            return { ...state, error: null }
         case 'UPDATE_SUCCESS':
             return state;
         case 'GET_START':
