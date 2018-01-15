@@ -4,7 +4,6 @@ const io = require('socket.io-client');
 import {serverUrl} from '../core/api';
 import {productUpdated} from './service';
 
-
 const PRODUCT_UPDATED = 'product/updated';
 
 export class Notification {
@@ -21,7 +20,7 @@ export class Notification {
         socket.on('connect', () => {
             console.log('connected');
             socket
-                .emit('authenticate', {token: this.token})
+                .emit('authenticate', {"token": this.token})
                 .on('authenticated', () => console.log(`socket authenticated`))
                 .on('unauthorized', (msg) => console.log(`socket unauthorized: ${JSON.stringify(msg.data)}`))
         });
