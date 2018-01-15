@@ -3,21 +3,26 @@ import { connect } from 'react-redux'
 import { updateProductAction,updateAmountState,updatePriceState,updateNameState } from './service';
 import styles from '../core/styles';
 import { Card, Button, FormLabel, FormInput } from "react-native-elements";
+import { Text, View, ActivityIndicator, TouchableHighlight, Alert } from 'react-native';
+
 
 
 class ProductEditComponent extends Component {
     constructor(props) {
         super(props);
         this.updateProduct = this.updateProduct.bind(this);
-    }
-    async componentWillMount() {
 
     }
+    async componentWillMount() {
+        const { dispatch,product } = this.props;
+        dispatch(updateNameState(product.name));
+        dispatch(updatePriceState(product.price));
+        dispatch(updateAmountState(product.amount));
+    }
+
+
     render() {
-        const { product,dispatch,name,price,amount,product } = this.props;
-        //dispatch(updateNameState(product.name));
-        //dispatch(updatePriceState(product.price));
-        //dispatch(updateAmountState(product.amount));
+        const { dispatch,name,price,amount,product } = this.props;
         return(
             <View style={styles.updateBox}>
                 <Card>
@@ -37,7 +42,6 @@ class ProductEditComponent extends Component {
 
     updateProduct(){
         const { token,dispatch, name, price, amount,product } = this.props
-        Alert.alert('update', name+" "+price+" "+amount);
         product.name=name;
         product.price=price;
         product.amount=amount;
@@ -53,6 +57,9 @@ const mapStateToProps = state => {
         isLoading: state.productEdit.isLoading,
         token: state.auth.token,
         product: state.productList.product,
+        name: state.productEdit.name,
+        price: state.productEdit.price,
+        amount: state.productEdit.amount
     };
 };
 

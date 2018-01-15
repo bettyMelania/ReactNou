@@ -1,18 +1,32 @@
 import React, { Component } from 'react';
 import { Text, View, ActivityIndicator, TouchableHighlight } from 'react-native';
-import { getLogger, issueToText } from '../core/utils';
+import { getLogger } from '../core/utils';
 import styles from '../core/styles';
 import { Card, Button, FormLabel, FormInput } from "react-native-elements";
 import { connect } from 'react-redux'
-import { bindActionCreators } from "redux";
-import { loginAction, updatePasswordState, updateUsernameState, loginStarted } from './service'
+import { loginAction, updatePasswordState, updateUsernameState ,setToken} from './service';
+import { setItem, getItem } from "../core/storage";
+
+
 const log = getLogger('auth/Login');
 class LoginComponent extends Component {
     constructor(props) {
         super(props);
-        this.login = this.login.bind(this)
-    }
+        this.login = this.login.bind(this);
+        this.verifyToken = this.verifyToken.bind(this);
 
+    }
+    componentWillMount(){
+        this.verifyToken();
+    }
+   
+    verifyToken(){
+        const { dispatch } = this.props;
+        getItem("token").then((value) => {
+            dispatch(setToken(value));
+            this.props.navigation.navigate('ProductList');
+        });
+    }
 
     render() {
         const { error, isLoading, username, password, dispatch } = this.props;
@@ -42,20 +56,13 @@ class LoginComponent extends Component {
     login() {
         log("login");
         const { dispatch, username, password } = this.props
-
         const inputFormProp =
-            {
-                username: username,
-                password: password
-            }
-
-
+            {username: username, password: password}
         dispatch(loginAction(inputFormProp)).then(() => {
             if (this.props.error === null && this.props.isLoading === false) {
-                if (this.props.token !== null && this.props.token !== '') {
                     log("navigate");
                     this.props.navigation.navigate('ProductList');
-                }
+
             }
         });
     }
@@ -66,7 +73,8 @@ const mapStateToProps = state => {
         username: state.auth.username,
         password: state.auth.password,
         error: state.auth.error,
-        isLoading: state.auth.isLoading
+        isLoading: state.auth.isLoading,
+        token:state.auth.token
     };
 };
 

@@ -36,10 +36,13 @@ export function getAllAction(token) {
                 Alert.alert('ERROR', 'Server error');
                 dispatch(getFailed('Error'));
             } else {
+
                 return response.json().then(data => {
                     dispatch(getAllSuccess(data));
                 });
             }
+        }).catch(error => {
+            alert(error);
         })
     ]);
 }
@@ -73,7 +76,9 @@ export function updateProductAction(data, token) {
                     dispatch(updateSuccess(data));
                 });
             }
-        })
+        }).catch(error => {
+            alert(error);
+            })
     ]);
 }
 

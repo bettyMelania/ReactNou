@@ -10,6 +10,8 @@ export const authReducer = (state = { error: null, isLoading: false, token: null
             return { ...state, username: action.obj }
         case 'UPDATE_PASSWORD':
             return { ...state, password: action.obj }
+        case 'SET_TOKEN':
+            return { ...state, token: action.obj }
         default:
             return state;
     }

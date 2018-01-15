@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux'
-import { getAction, getAllAction, datasetstateSet, setDataset, changeDeleted } from './service';
-import {ScrollView,ListView, Text, View, StatusBar, ActivityIndicator, Alert} from 'react-native';
+import {  getAllAction } from './service';
+import {ScrollView,ListView, Text, View, StatusBar, ActivityIndicator, Alert,NetInfo} from 'react-native';
 import styles from '../core/styles';
 import ProductView from "./ProductView";
 import {Spinner} from 'native-base';
@@ -21,10 +21,12 @@ class ProductListComponent extends Component {
             }
         });
     }
+
+
     renderItem() {
         if (this.props.dataset) {
             return this.props.dataset.map(record => {
-                return <ProductView record={record} key={record.ID} {...this.props} />;
+                return <ProductView record={record} key={record.id} {...this.props} />;
             });
         }
         return null;
@@ -51,7 +53,6 @@ const mapStateToProps = state => {
         isLoading: state.productList.isLoading,
         token: state.auth.token,
         dataset: state.productList.dataset,
-        datasetState: state.productList.datasetState,
     };
 };
 
