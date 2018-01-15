@@ -13,6 +13,15 @@ export const productReducer = (state = { error: null,  isLoading: false, token: 
             return { ...state, dataset: action.obj }
         case 'UPDATE_VIEW':
             return { ...state, product: action.obj }
+        case 'PRODUCT_UPDATED':
+            items = [...state.dataset];
+            index = items.findIndex((i) => i._id == action.obj.id);
+            if (index != -1) {
+                items.splice(index, 1, action.obj);
+            } else {
+                items.push(action.obj);
+            }
+            return { ...state, dataset:items }
         default:
             return state;
     }

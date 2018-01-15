@@ -6,6 +6,7 @@ import { Card, Button, FormLabel, FormInput } from "react-native-elements";
 import { connect } from 'react-redux'
 import { loginAction, updatePasswordState, updateUsernameState ,setToken} from './service';
 import { setItem, getItem } from "../core/storage";
+import { Notification } from "../product/Notification";
 
 
 const log = getLogger('auth/Login');
@@ -14,6 +15,7 @@ class LoginComponent extends Component {
         super(props);
         this.login = this.login.bind(this);
         this.verifyToken = this.verifyToken.bind(this);
+        this.navigate = this.navigate.bind(this);
 
     }
     componentWillMount(){
@@ -24,8 +26,18 @@ class LoginComponent extends Component {
         const { dispatch } = this.props;
         getItem("token").then((value) => {
             dispatch(setToken(value));
-            this.props.navigation.navigate('ProductList');
+            this.navigate(value);
+
         });
+    }
+    navigate(token){
+        const {  dispatch } = this.props;
+        if (this.notificationClient) {
+            this.notificationClient.disconnect();
+        }
+        this.notificationClient = new Notification(token,dispatch);
+        this.notificationClient.connect();
+        this.props.navigation.navigate('ProductList');
     }
 
     render() {
@@ -60,7 +72,7 @@ class LoginComponent extends Component {
         dispatch(loginAction(inputFormProp)).then(() => {
             if (this.props.error === null && this.props.isLoading === false) {
                     setItem("token",this.props.token);
-                    this.props.navigation.navigate('ProductList');
+                    this.navigate(this.props.token);
             }
         });
     }

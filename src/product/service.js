@@ -148,3 +148,10 @@ export const toUpdateView = obj => {
         obj
     }
 }
+
+export const productUpdated = obj => {
+    return {
+        type: 'PRODUCT_UPDATED',
+        obj
+    }
+}
