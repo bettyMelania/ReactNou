@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux'
 import { getAction, getAllAction, datasetstateSet, setDataset, changeDeleted } from './service';
-import {ListView, Text, View, StatusBar, ActivityIndicator, Alert} from 'react-native';
+import {ScrollView,ListView, Text, View, StatusBar, ActivityIndicator, Alert} from 'react-native';
 import styles from '../core/styles';
 import ProductView from "./ProductView";
+import {Spinner} from 'native-base';
+
 
 class ProductListComponent extends Component {
     constructor(props) {
@@ -12,35 +14,34 @@ class ProductListComponent extends Component {
     }
 
     async componentWillMount() {
-        getAllAction(this.props.token);
-        this.props.dataset.reset(0);
+        const { dispatch, token,dataset } = this.props;
+        dispatch(getAllAction(token)).then(() => {
+            if (this.props.error === null && this.props.isLoading === false) {
+                this.props.dataset.reset(0);
+            }
+        });
     }
     renderItem() {
         if (this.props.dataset) {
-            return this.props.datasetState.map(record => {
-                return <ProductView record={record} key={record.content.id} {...this.props} />;
+            return this.props.dataset.map(record => {
+                return <ProductView record={record} key={record.ID} {...this.props} />;
             });
         }
         return null;
     }
+
     render() {
         const { isLoading,dataset,token } = this.props;
         return (
             <View style={styles.content}>
+                <Text  style={styles.title}> PRODUCTS </Text>
                 <ActivityIndicator animating={isLoading} style={styles.activityIndicator} size="large"/>
-                <ListView
-                    dataSource={dataset}
-                    enableEmptySections={true}
-                    renderRow={product => (<ProductView record={product} key={product.content.id} {...this.props}
-                                                        onPress={(product) => this.onProductPress(product)}/>)}/>
 
+                <ScrollView style={styles.contentContainer}>
+                    {this.renderItem()}
+                </ScrollView>
             </View>
         );
-    }
-
-    onProductPress(product) {
-        this.props.navigation.navigate('ProductEdit');
-
     }
 }
 

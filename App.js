@@ -5,16 +5,18 @@ import thunk from 'redux-thunk';
 import { Provider, connect } from "react-redux";
 import { StackNavigator, addNavigationHelpers } from "react-navigation";
 import { authReducer } from "./src/auth/reducer";
-import { productReducer } from "./src/product/reducer";
+import { productReducer,productEditReducer } from "./src/product/reducer";
 import { persistStore, autoRehydrate } from 'redux-persist';
 import LoginComponent from "./src/auth/Login";
 import ProductListComponent from "./src/product/ProductList";
+import ProductEditComponent from "./src/product/ProductEdit";
 
 
 
 const AppNavigator = StackNavigator({
     Login: {screen: LoginComponent},
     ProductList: {screen: ProductListComponent},
+    ProductEdit: {screen: ProductEditComponent},
 });
 
 const loginState = AppNavigator.router.getStateForAction(AppNavigator.router.getActionForPathAndParams('Login'));
@@ -52,7 +54,7 @@ const initialState = {
 const rootReducer = combineReducers
 (
     {
-        nav: navReducer, auth: authReducer, productList: productReducer
+        nav: navReducer, auth: authReducer, productList: productReducer, productEdit: productEditReducer
     }
 );
 

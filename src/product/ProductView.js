@@ -1,28 +1,41 @@
 import React, { Component } from 'react';
-import {Text, Image,} from 'react-native';
+import {Text, View, StyleSheet, TouchableHighlight,Alert} from 'react-native';
+import {connect} from "react-redux";
+import styles from '../core/styles';
+import {toUpdateView} from "./service";
 
-export default class ProductView extends Component {
+class ProductView extends Component {
     constructor(props) {
         super(props);
-        this.recordData = props.record.content;
+        this.onProductPress = this.onProductPress.bind(this);
+        this.product = props.record;
     }
 
     render() {
-        return (
-            <Card style={{ margin: 10 }}>
-                <CardItem header>
-                    <Text>{this.recordData.name}</Text>
-                </CardItem>
-                <CardItem>
-                    <Body>
-                    <Text>
-                        price: {this.recordData.price} {"\n"}
-                        amount: {this.recordData.amount} {"\n"}
-                    </Text>
-                    </Body>
-                </CardItem>
+            return(
+                <TouchableHighlight onPress={() => this.onProductPress(this.product)}>
 
-            </Card>
-        );
+                <View key={this.product.id} style={styles.box}>
+                    <Text style={styles.name}>Price: {this.product.name}</Text>
+                    <Text style={styles.price}>Price: {this.product.price}</Text>
+                    <Text style={styles.amount}>Amount: {this.product.amount}</Text>
+
+                </View>
+                </TouchableHighlight>
+            );
+    }
+    onProductPress(product) {
+        const { dispatch } = this.props;
+        dispatch(toUpdateView(product));
+        this.props.navigation.navigate('ProductEdit');
     }
 }
+
+const mapStateToProps = state => {
+    return {
+        dataset: state.productList.dataset,
+    };
+};
+
+export default connect(mapStateToProps)(ProductView);
+

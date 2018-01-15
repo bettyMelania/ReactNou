@@ -1,4 +1,4 @@
-import { serverUrl } from '../core/api';
+import { serverUrl,authHeaders } from '../core/api';
 import { getLogger } from "../core/utils";
 import { Alert } from 'react-native';
 
@@ -7,12 +7,8 @@ import { Alert } from 'react-native';
 export const getAllService = (token) => {
     return fetch(`${serverUrl}/api/product`, {
         method: 'GET',
-        headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json',
-            'Authorization': 'Bearer ' + token,
-        }
-    })
+        headers: authHeaders(token)
+        })
         .then(function (response) {
             return response;
         });
@@ -21,13 +17,10 @@ export const getAllService = (token) => {
 
 export const updateService = (data, token) => {
 
-    return fetch(`${serverUrl}/api/product/`+data, {
+    return fetch(`${serverUrl}/api/product/`+data.id, {
         method: 'PUT',
-        headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json',
-            'Authorization': 'Bearer ' + token,
-        }
+        headers: authHeaders(token),
+        body: JSON.stringify(data)
     })
         .then(function (response) {
             return response;
@@ -36,7 +29,6 @@ export const updateService = (data, token) => {
 
 
 export function getAllAction(token) {
-    Alert.alert('ERROR', 'getStarted+ token'+token);
     return dispatch => Promise.all([
         dispatch(getStarted()),
         getAllService(token).then(response => {
@@ -44,7 +36,6 @@ export function getAllAction(token) {
                 Alert.alert('ERROR', 'Server error');
                 dispatch(getFailed('Error'));
             } else {
-                Alert.alert('OK', 'get ok');
                 return response.json().then(data => {
                     dispatch(getAllSuccess(data));
                 });
@@ -69,13 +60,13 @@ export function getAction(token, currentPage) {
     ]);
 }
 
-export function updateAction(data, token) {
+export function updateProductAction(data, token) {
     return dispatch => Promise.all([
         dispatch(getStarted()),
         updateService(data, token).then(response => {
             if (!response.ok) {
                 Alert.alert('ERROR', 'Could not be updated.');
-                dispatch(getFailed('Error'));
+                dispatch(updateFailed('Error'));
             } else {
                 Alert.alert('YES!', 'Succesfully updated.');
                 return response.json().then(data => {
@@ -107,9 +98,10 @@ export const getStarted = () => {
     }
 }
 
-export const getAllSuccess = () => {
+export const getAllSuccess = (obj) => {
     return {
-        type: 'GET_ALL_SUCCESS'
+        type: 'GET_ALL_SUCCESS',
+        obj
     }
 }
 
@@ -131,5 +123,46 @@ export const getFailed = obj => {
 export const deleteSuccess = () => {
     return {
         type: 'DELETE_SUCCESS'
+    }
+}
+
+
+export const updateFailed = obj => {
+    return {
+        type: 'UPDATE_FAIL',
+        obj
+    }
+}
+
+export const updateSuccess = () => {
+    return {
+        type: 'UPDATE_SUCCESS'
+    }
+}
+
+
+export const updateNameState = obj => {
+    return {
+        type: 'UPDATE_NAME',
+        obj
+    }
+}
+export const updatePriceState = obj => {
+    return {
+        type: 'UPDATE_PRICE',
+        obj
+    }
+}
+export const updateAmountState = obj => {
+    return {
+        type: 'UPDATE_AMOUNT',
+        obj
+    }
+}
+
+export const toUpdateView = obj => {
+    return {
+        type: 'UPDATE_VIEW',
+        obj
     }
 }
