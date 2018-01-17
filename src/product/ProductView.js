@@ -8,18 +8,18 @@ class ProductView extends Component {
     constructor(props) {
         super(props);
         this.onProductPress = this.onProductPress.bind(this);
-        this.product = props.record;
+        //this.product = props.record;
     }
 
     render() {
+        const { product } = this.props;
+        console.log("render view"+product.name);
             return(
-                <TouchableHighlight onPress={() => this.onProductPress(this.product)}>
-
-                <View key={this.product.id} style={styles.box}>
-                    <Text style={styles.name}>Price: {this.product.name}</Text>
-                    <Text style={styles.price}>Price: {this.product.price}</Text>
-                    <Text style={styles.amount}>Amount: {this.product.amount}</Text>
-
+                <TouchableHighlight onPress={() => this.onProductPress(product)}>
+                <View key={product.id} style={styles.box}>
+                    <Text style={styles.name}>Price: {product.name}</Text>
+                    <Text style={styles.price}>Price: {product.price}</Text>
+                    <Text style={styles.amount}>Amount: {product.amount}</Text>
                 </View>
                 </TouchableHighlight>
             );
@@ -33,7 +33,7 @@ class ProductView extends Component {
 
 const mapStateToProps = state => {
     return {
-        dataset: state.productList.dataset,
+        product: state.productList.product,
     };
 };
 

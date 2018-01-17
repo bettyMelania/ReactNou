@@ -40,6 +40,7 @@ class ProductListComponent extends Component {
             console.log("not connected to NET");
             const { dispatch,dataset } = this.props;
             getItem("dataset").then((value)=>{
+                //console.log(value);
                 dispatch(getAllSuccess(value));
                 this.props.dataset.reset(0);
             }).catch((err)=>console.log(""));
@@ -57,6 +58,7 @@ class ProductListComponent extends Component {
     }
 
     render() {
+        console.log("render");
         const { isLoading } = this.props;
         return (
             <View style={styles.content}>
@@ -70,6 +72,8 @@ class ProductListComponent extends Component {
         );
     }
 }
+
+
 
 const mapStateToProps = state => {
     return {

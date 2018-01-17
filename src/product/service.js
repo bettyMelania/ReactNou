@@ -1,6 +1,6 @@
 import { serverUrl,authHeaders } from '../core/api';
-import { Alert } from 'react-native';
-
+import {Alert, NetInfo} from 'react-native';
+import { setItem, getItem } from "../core/storage";
 
 export const getAllService = (token) => {
     return fetch(`${serverUrl}/api/product`, {
@@ -36,7 +36,7 @@ export function getAllAction(token) {
             } else {
 
                 return response.json().then(data => {
-                    //setItem("dataset",data);
+                    setItem("dataset",data);
                     dispatch(getAllSuccess(data));
                 });
             }
@@ -67,10 +67,12 @@ export function updateProductAction(data, token) {
         dispatch(getStarted()),
         updateService(data, token).then(response => {
             if (!response.ok) {
+
                 Alert.alert('ERROR', 'Could not be updated.');
                 dispatch(updateFailed('Error'));
             } else {
                 Alert.alert('YES!', 'Succesfully updated.');
+
                 return response.json().then(data => {
                     dispatch(updateSuccess(data));
                 });

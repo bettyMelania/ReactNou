@@ -23,6 +23,7 @@ export class Notification {
                 .emit('authenticate', {"token": this.token})
                 .on('authenticated', () => console.log(`socket authenticated`))
                 .on('unauthorized', (msg) => console.log(`socket unauthorized: ${JSON.stringify(msg.data)}`))
+
         });
         socket.on(PRODUCT_UPDATED, (product) => {
             console.log(PRODUCT_UPDATED);

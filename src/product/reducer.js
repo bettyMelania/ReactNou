@@ -1,3 +1,4 @@
+import {Alert} from "react-native";
 
 export const productReducer = (state = { error: null,  isLoading: false, token: null, dataset: null }, action) => {
     switch (action.type) {
@@ -14,14 +15,14 @@ export const productReducer = (state = { error: null,  isLoading: false, token: 
         case 'UPDATE_VIEW':
             return { ...state, product: action.obj }
         case 'PRODUCT_UPDATED':
-            items = [...state.dataset];
-            index = items.findIndex((i) => i._id == action.obj.id);
+            var dataset = [...state.dataset];
+            var index = dataset.findIndex((i) => i.id == action.obj.id);
             if (index != -1) {
-                items.splice(index, 1, action.obj);
-            } else {
-                items.push(action.obj);
+                dataset.splice(index, 1, action.obj);
             }
-            return { ...state, dataset:items }
+            return { ...state, dataset:dataset }
+        case 'SET_PRODUCT':
+            return { ...state, product: action.obj }
         default:
             return state;
     }

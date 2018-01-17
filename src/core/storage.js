@@ -13,6 +13,7 @@ export async function getItem(key) {
                 if (result) {
                     try {
                         result = JSON.parse(result);
+                        //console.log(result);
                     } catch (e) {
                          console.error('AsyncStorage#getItem error deserializing JSON for key: ' + key, e.message);
                     }
