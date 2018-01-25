@@ -5,7 +5,7 @@ import styles from '../core/styles';
 import { Card, Button, FormLabel, FormInput } from "react-native-elements";
 import { connect } from 'react-redux'
 import { loginAction, updatePasswordState, updateUsernameState ,setToken} from './service';
-import { setItem, getItem } from "../core/storage";
+import { setItem, getItem,removeItem } from "../core/storage";
 import { Notification } from "../product/Notification";
 
 
@@ -25,9 +25,10 @@ class LoginComponent extends Component {
     verifyToken(){
         const { dispatch } = this.props;
         getItem("token").then((value) => {
-            dispatch(setToken(value));
-            this.navigate(value);
-
+            if(value) {
+                dispatch(setToken(value));
+                this.navigate(value);
+            }
         });
     }
     navigate(token){

@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux'
-import {getAllAction, getAllSuccess} from './service';
-import {ScrollView, Text, View, ActivityIndicator,NetInfo} from 'react-native';
+import {getAllAction, getAllSuccess, toUpdateView} from './service';
+import {ScrollView, Text, View, ActivityIndicator,NetInfo, TouchableHighlight} from 'react-native';
 import styles from '../core/styles';
-import ProductView from "./ProductView";
 import { setItem, getItem } from "../core/storage";
 
 
@@ -51,7 +50,15 @@ class ProductListComponent extends Component {
     renderItem() {
         if (this.props.dataset) {
             return this.props.dataset.map(record => {
-                return <ProductView record={record} key={record.id} {...this.props} />;
+                return(
+                    <TouchableHighlight key={record._id} onPress={() => this.onProductPress(record)}>
+                    <View style={styles.box}>
+                        <Text style={styles.name}>Price: {record.name}</Text>
+                        <Text style={styles.price}>Price: {record.price}</Text>
+                        <Text style={styles.amount}>Amount: {record.amount}</Text>
+                    </View>
+                    </TouchableHighlight>
+                );
             });
         }
         return null;
@@ -63,13 +70,20 @@ class ProductListComponent extends Component {
         return (
             <View style={styles.content}>
                 <Text  style={styles.title}> PRODUCTS </Text>
-                <ActivityIndicator animating={isLoading} style={styles.activityIndicator} size="large"/>
 
-                <ScrollView style={styles.contentContainer}>
-                    {this.renderItem()}
-                </ScrollView>
+                {isLoading && <ActivityIndicator animating={true} style={styles.activityIndicator} size="large"/>}
+                { !isLoading &&
+                    <ScrollView style={styles.contentContainer}>
+                        {this.renderItem()}
+                    </ScrollView>
+                }
             </View>
         );
+    }
+    onProductPress(product) {
+        const { dispatch } = this.props;
+        dispatch(toUpdateView(product));
+        this.props.navigation.navigate('ProductEdit');
     }
 }
 

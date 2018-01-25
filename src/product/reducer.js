@@ -1,4 +1,5 @@
 import {Alert} from "react-native";
+import { setItem, getItem } from "../core/storage";
 
 export const productReducer = (state = { error: null,  isLoading: false, token: null, dataset: null }, action) => {
     switch (action.type) {
@@ -16,10 +17,13 @@ export const productReducer = (state = { error: null,  isLoading: false, token: 
             return { ...state, product: action.obj }
         case 'PRODUCT_UPDATED':
             var dataset = [...state.dataset];
-            var index = dataset.findIndex((i) => i.id == action.obj.id);
+            var index = dataset.findIndex((i) => i._id == action.obj._id);
             if (index != -1) {
                 dataset.splice(index, 1, action.obj);
             }
+            else
+                dataset.push(action.obj);
+            setItem("dataset",dataset);
             return { ...state, dataset:dataset }
         case 'SET_PRODUCT':
             return { ...state, product: action.obj }
@@ -29,7 +33,7 @@ export const productReducer = (state = { error: null,  isLoading: false, token: 
 };
 export const productEditReducer = (state = { error: null, isLoading: false, token: null, name: '',price: '',amount: '' }, action) => {
     switch (action.type) {
-        case 'GET_START':
+        case 'UPDATE_START':
             return { ...state, isLoading: true }
         case 'UPDATE_SUCCESS':
             return { ...state, isLoading: false }

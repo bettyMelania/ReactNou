@@ -5,6 +5,7 @@ import {serverUrl} from '../core/api';
 import {productUpdated} from './service';
 
 const PRODUCT_UPDATED = 'product/updated';
+const PRODUCT_CREATED = 'product/created';
 
 export class Notification {
     constructor(token,dispatch) {
@@ -27,6 +28,10 @@ export class Notification {
         });
         socket.on(PRODUCT_UPDATED, (product) => {
             console.log(PRODUCT_UPDATED);
+            this.dispatch(productUpdated(product))
+        });
+        socket.on(PRODUCT_CREATED, (product) => {
+            console.log(PRODUCT_CREATED);
             this.dispatch(productUpdated(product))
         });
     };

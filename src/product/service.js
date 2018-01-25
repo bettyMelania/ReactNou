@@ -64,7 +64,7 @@ export function getAction(token, currentPage) {
 
 export function updateProductAction(data, token) {
     return dispatch => Promise.all([
-        dispatch(getStarted()),
+        dispatch(updateStarted()),
         updateService(data, token).then(response => {
             if (!response.ok) {
 
@@ -155,5 +155,10 @@ export const productUpdated = obj => {
     return {
         type: 'PRODUCT_UPDATED',
         obj
+    }
+}
+export const updateStarted = () => {
+    return {
+        type: 'UPDATE_START'
     }
 }
